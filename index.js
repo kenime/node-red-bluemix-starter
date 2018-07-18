@@ -27,13 +27,14 @@ var settings = require("./bluemix-settings.js");
 if (!settings.adminAuth) {
     // No user-defined security
     var storage;
+    var runtime = require('./node_modules/node-red/red/runtime');
     if (settings.storageModule) {
         storage = settings.storageModule;
     } else {
         storage = require('./node_modules/node-red/red/runtime/storage/localfilesystem');
     }
     util.log("Loading application settings");
-    storage.init(settings).then(storage.getSettings).then(function(runtimeSettings) {
+    storage.init(settings, runtime).then(storage.getSettings).then(function(runtimeSettings) {
         if (process.env.NODE_RED_USERNAME && process.env.NODE_RED_PASSWORD) {
             util.log("Enabling adminAuth using NODE_RED_USERNAME/NODE_RED_PASSWORD");
             var config = {
